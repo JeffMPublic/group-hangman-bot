@@ -14,7 +14,7 @@ TODO        : Allow to just close 1 game given a gameid
               Better Error checking and a return
 */
 function gameOver($userid,$gameid = 0){
-	$setGameOver = new mysqli('mysql.dontburnthepig.com',MYSQLUSER,MYSQLPASSWORD);
+	$setGameOver = new mysqli(MYSQLHOST,MYSQLUSER,MYSQLPASSWORD);
         $setGameOver->select_db("dontburnthepig_hangman");
         $query = "update `dontburnthepig_hangman`.`games` set finished = NOW() where user_id = ? and finished is NULL";
         $stmt = $setGameOver->prepare($query);
@@ -31,7 +31,7 @@ Return      :(boolean) True if valid guess
                        False is invalide guess
 */
 function validGuess($userid,$guess){
- 	$gameData = new mysqli('mysql.dontburnthepig.com',MYSQLUSER,MYSQLPASSWORD);
+ 	$gameData = new mysqli(MYSQLHOST,MYSQLUSER,MYSQLPASSWORD);
     	if($session_check -> connect_error){
         	printf("Connection to DB failed",$mysqli->connect-error);
         	die();           
@@ -59,7 +59,7 @@ TODO        :Error checking and return error is something has happened
 */
 function makeGuess($userid,$guess){
 	if(opengame($userid)){
-	$guess_maker = new mysqli('mysql.dontburnthepig.com',MYSQLUSER,MYSQLPASSWORD);
+	$guess_maker = new mysqli(MYSQLHOST,MYSQLUSER,MYSQLPASSWORD);
     	$guess_maker->select_db("dontburnthepig_hangman");
     	$query = "update `dontburnthepig_hangman`.`games` set `guesses` = CONCAT(`guesses`, ?),wrong_count = IF(word like ? ,wrong_count,  wrong_count +1) where finished is NULL and user_id = ?"; 
         $stmt = $guess_maker->prepare($query);
@@ -79,7 +79,7 @@ Return      :(string) $rtstr the the groupme api can output in chat to show the 
 TODO        :Mostly more error checkin and display hangman images off of the server
 */
 function displayGame($userid,$gameid = 0){
-    $gameData = new mysqli('mysql.dontburnthepig.com',MYSQLUSER,MYSQLPASSWORD);
+    $gameData = new mysqli(MYSQLHOST,MYSQLUSER,MYSQLPASSWORD);
     if($session_check -> connect_error){
         printf("Connection to DB failed",$mysqli->connect-error);
         die();           
@@ -132,7 +132,7 @@ Return      :(boolean) if there is an open game it will return true, false other
 
 */
 function opengame($userid){
-    $session_check = new mysqli('mysql.dontburnthepig.com',MYSQLUSER,MYSQLPASSWORD);
+    $session_check = new mysqli(MYSQLHOST,MYSQLUSER,MYSQLPASSWORD);
     if($session_check -> connect_error){
         printf("Connection to DB failed",$mysqli->connect-error);
         die();           
@@ -166,7 +166,7 @@ function buildnewgame($userid){
 	echo "open";
 	return false;
 	}
-    $game_builder = new mysqli('mysql.dontburnthepig.com',MYSQLUSER,MYSQLPASSWORD);
+    $game_builder = new mysqli(MYSQLHOST,MYSQLUSER,MYSQLPASSWORD);
     if($session_recorder -> connect_error){
         printf("Connection to DB failed",$mysqli->connect-error);
         die();           
